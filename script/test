@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+docker-compose build
+exec docker-compose run funker go test -test.timeout 1s .
