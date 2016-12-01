@@ -2,7 +2,6 @@ package funker
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net"
 )
@@ -33,8 +32,6 @@ func Call(name string, args interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("hello! got:")
-	fmt.Println(retJSON)
 	var ret interface{}
 	err = json.Unmarshal(retJSON, &ret)
 	return ret, err
