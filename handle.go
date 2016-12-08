@@ -17,14 +17,18 @@ func Handle(handler interface{}) error {
 	}
 	argsValue := reflect.New(handlerType.In(0))
 
-	// TODO (bfirsh): no easy way to set connection queue to 1, yet.
-	// https://github.com/golang/go/issues/9661
 	listener, err := net.Listen("tcp", ":9999")
 	if err != nil {
 		return err
 	}
 	conn, err := listener.Accept()
 	if err != nil {
+		return err
+	}
+	// We close listener, because we only allow single request.
+	// Note that TCP "backlog" cannot be used for that purpose.
+	// http://www.perlmonks.org/?node_id=940662
+	if err = listener.Close(); err != nil {
 		return err
 	}
 	argsJSON, err := ioutil.ReadAll(conn)
@@ -46,9 +50,5 @@ func Handle(handler interface{}) error {
 		return err
 	}
 
-	if err = conn.Close(); err != nil {
-		return err
-	}
-
-	return listener.Close()
+	return conn.Close()
 }
