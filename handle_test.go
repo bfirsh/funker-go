@@ -77,7 +77,7 @@ func TestSecondRequest(t *testing.T) {
 	call2Begin := time.Now()
 	res, err := Call("localhost", data{X: "call2"})
 	if err == nil {
-		t.Fatal("2nd call should fail, got %v", res)
+		t.Fatalf("2nd call should fail, got %v", res)
 	}
 	call2Took := time.Now().Sub(call2Begin)
 	t.Logf("2nd call took %s, got err %v", call2Took, err)
